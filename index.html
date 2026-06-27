@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QA Automation Roadmap — Muralidharan</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;background:#f0f4fa;min-height:100vh;color:#1a1a1a}
+
+  /* HEADER */
+  .header{background:#1a3c6e;padding:20px 16px 16px;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,0.2)}
+  .header h1{color:#fff;font-size:17px;font-weight:600;margin-bottom:10px;letter-spacing:0.01em}
+  .header h1 span{color:#90bde8;font-weight:400}
+  .progress-row{display:flex;align-items:center;gap:10px}
+  .bar-bg{flex:1;height:8px;background:rgba(255,255,255,0.15);border-radius:4px;overflow:hidden}
+  .bar-fill{height:100%;background:#70c456;border-radius:4px;transition:width 0.4s ease}
+  .pct{color:#fff;font-size:13px;font-weight:600;min-width:40px;text-align:right}
+  .count{color:#90bde8;font-size:12px;min-width:70px}
+
+  /* MAIN */
+  .main{max-width:680px;margin:0 auto;padding:16px 12px 40px}
+
+  /* PHASE */
+  .phase{margin-bottom:20px}
+  .phase-header{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:10px;margin-bottom:8px}
+  .phase-dot{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex-shrink:0}
+  .phase-info{flex:1}
+  .phase-title{font-size:14px;font-weight:600}
+  .phase-meta{font-size:11px;opacity:0.7;margin-top:1px}
+  .phase-prog{font-size:12px;font-weight:600;white-space:nowrap}
+
+  .p1 .phase-header{background:#deeaf8} .p1 .phase-dot{background:#2e75b6;color:#fff} .p1 .phase-title{color:#1a3c6e} .p1 .phase-prog{color:#1a5296}
+  .p2 .phase-header{background:#e2f0d9} .p2 .phase-dot{background:#548235;color:#fff} .p2 .phase-title{color:#375623} .p2 .phase-prog{color:#375623}
+  .p3 .phase-header{background:#fce4c3} .p3 .phase-dot{background:#c55a11;color:#fff} .p3 .phase-title{color:#843c0c} .p3 .phase-prog{color:#843c0c}
+  .p4 .phase-header{background:#e8e0f8} .p4 .phase-dot{background:#6b4ba1;color:#fff} .p4 .phase-title{color:#4b2d8e} .p4 .phase-prog{color:#4b2d8e}
+
+  /* TOPIC CARD */
+  .topic{background:#fff;border-radius:10px;border:1.5px solid #e8edf4;margin-bottom:7px;cursor:pointer;transition:border-color 0.15s,background 0.15s;display:flex;align-items:flex-start;gap:0;overflow:hidden;-webkit-tap-highlight-color:transparent;user-select:none}
+  .topic:active{transform:scale(0.985)}
+  .topic.done{background:#f0f8ea;border-color:#a9d18e}
+  .topic-check{width:48px;flex-shrink:0;display:flex;align-items:center;justify-content:center;padding:14px 0;align-self:stretch}
+  .check-circle{width:22px;height:22px;border-radius:50%;border:2px solid #ccc;display:flex;align-items:center;justify-content:center;transition:all 0.2s;background:#fff}
+  .topic.done .check-circle{background:#70c456;border-color:#70c456}
+  .check-icon{display:none;color:#fff;font-size:13px;font-weight:700;line-height:1}
+  .topic.done .check-icon{display:block}
+  .topic-body{flex:1;padding:12px 12px 12px 0}
+  .topic-name{font-size:13px;font-weight:600;color:#1a3c6e;margin-bottom:3px}
+  .topic.done .topic-name{color:#375623}
+  .topic-desc{font-size:11.5px;color:#666;line-height:1.45}
+  .topic.done .topic-desc{color:#548235}
+
+  /* QUICK ASK */
+  .ask-section{margin-top:28px;background:#fff;border-radius:12px;border:1.5px solid #e8edf4;padding:16px}
+  .ask-title{font-size:13px;font-weight:600;color:#1a3c6e;margin-bottom:10px}
+  .ask-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+  @media(max-width:420px){.ask-grid{grid-template-columns:1fr}}
+  .ask-btn{background:#f0f4fa;border:1.5px solid #d0ddf0;border-radius:8px;padding:9px 11px;font-size:12px;color:#1a3c6e;cursor:pointer;text-align:left;font-family:inherit;font-weight:500;line-height:1.35;transition:background 0.15s;-webkit-tap-highlight-color:transparent}
+  .ask-btn:hover{background:#deeaf8}
+  .ask-btn:active{transform:scale(0.97)}
+
+  /* RESET */
+  .footer{text-align:center;padding:20px 0 8px;color:#aaa;font-size:11px}
+  .reset-btn{background:none;border:none;color:#aaa;font-size:11px;cursor:pointer;text-decoration:underline;font-family:inherit}
+  .reset-btn:hover{color:#e24b4a}
+
+  /* TOAST */
+  .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#1a3c6e;color:#fff;padding:10px 20px;border-radius:20px;font-size:13px;font-weight:500;pointer-events:none;opacity:0;transition:opacity 0.3s;z-index:999;white-space:nowrap}
+  .toast.show{opacity:1}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>QA Automation Roadmap <span>· Muralidharan</span></h1>
+  <div class="progress-row">
+    <span class="count" id="count">0 / 22 done</span>
+    <div class="bar-bg"><div class="bar-fill" id="bar" style="width:0%"></div></div>
+    <span class="pct" id="pct">0%</span>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- PHASE 1 -->
+  <div class="phase p1">
+    <div class="phase-header">
+      <div class="phase-dot">1</div>
+      <div class="phase-info">
+        <div class="phase-title">Java basics</div>
+        <div class="phase-meta">Weeks 1–2 · 6 topics</div>
+      </div>
+      <div class="phase-prog" id="pp1">0/6</div>
+    </div>
+    <div class="topic" data-id="t1" data-phase="1" onclick="toggle(this)">
+      <div class="topic-check"><div class="check-circle"><span class="check-icon">✓</span></div></div>
+      <div class="topic-body">
+        <div class="topic-name">Setup &amp; first program</div>
+        <div class="topic-desc">Install JDK, IntelliJ, write Hello World, understand .java → .class flow</div>
+      </div>
+    </div>
+    <div class="topic" data-id="t2" data-phase="1" onclick="toggle(this)">
+      <div class="topic-check"><div class="check-circle"><span class="check-icon">✓</span></div></div>
+      <div class="topic-body">
+        <div class="topic-name">Variables &amp; data types</div>
+        <div class="topic-desc">int, String, boolean, double — declare, assign, print to console</div>
+      </div>
+    </div>
+    <div class="topic" data-id="t3" data-phase="1" onclick="toggle(this)">
+      <div class="topic-check"><div class="check-circle"><span class="check-icon">✓</span></div></div>
+      <div class="topic-body">
+        <div class="topic-name">Conditions &amp; loops</div>
+        <div class="topic-desc">if/else, for, while, switch — control the flow of your program</div>
+      </div>
+    </div>
+    <div class="topic" data-id="t4" data-phase="1" onclick="toggle(this)">
+      <div class="topic-check"><div class="check-circle"><span class="check-icon">✓</span></div></div>
+      <div class="topic-body">
+        <div class="topic-name">Methods &amp; arrays</div>
+        <div class="topic-desc">Write reusable methods, work with arrays and ArrayList</div>
+      </div>
+    </div>
+    <div class="topic" data-id="t5" data-phase="1" onclick="toggle(this)">
+      <div class="topic-check"><div class="check-circle"><span class="check-icon">✓</span></div></div>
+      <div class="topic-body">
+        <div class="topic-name">OOP fundamentals</div>
+        <div class="topic-desc">Classes, objects, constructors, inheritance, encapsulation</div>
+      </div>
+    </div>
+    <div class="topic" data-id="t6" data-phase="1" onclick="toggle(this)">
+      <div class="topic-check"><div class="check-circle"><span class="check-icon">✓</span></div></div>
+      <div class="topic-body">
+        <div class="topic-name">Exception handling</div>
+        <div class="topic-desc">try/catch/finally — handle errors Selenium will throw at you</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PHASE 2 -->
+  <div class="phase p2">
+    <div class="phase-header">
+      <div class="phase-dot">2</div>
+      <div class="phase-info">
+        <div class="phase-title">Selenium WebDriver</div>
+        <div class="phase-meta">Weeks 3–5 · 6 topics</div>
+      </div>
+      <div class="phase-prog" id="pp2">0/6</div>
+    </div>
+    <div class="topic" data-id="t7" data-phase="2" onclick="toggle(this)">
+      <div class="topic-check"><div class="check-circle"><span class="check-icon">✓</span></div></div>
+      <div class="topic-body">
+        <div class="topic-name">Setup Selenium + ChromeDriver</div>
+        <div class="topic-desc">Add Maven dependency, launch Chrome, open a URL in 5 lines</div>
+      </div>
+    </div>
+    <div class="topic" data-id="t8" data-phase="2" onclick="toggle(this)">
+      <div class="topic-check"><div class="check-circle"><span class="check-icon">✓</span></div></div>
+      <div class="topic-body">
+        <div class="topic-name">Locators</div>
+        <div class="topic-desc">ID, name, className, XPath, CSS selector — find any element on any page</div>
+      </div>
+    </div>
+    <div class="topic" data-id="t9" data-phase="2" onclick="toggle(this)">
+      <div class="topic-check"><div class="check-circle"><span class="check-icon">✓</span></div></div>
+      <div class="topic-body">
+        <div class="topic-name">Browser actions</div>
+        <div class="topic-desc">click, sendKeys, getText, navigate, back, forward, refresh</div>
+      </div>
+    </div>
+    <div class="topic" data-id="t10" data-phase="2" onclick="toggle(this)">
+      <div class="topic-check"><div class="check-circle"><span class="check-icon">✓</span></div></div>
+      <div class="topic-body">
+        <div class="topic-name">Waits</div>
+        <div class="topic-desc">ImplicitWait, ExplicitWait, FluentWait — solve timing and sync issues</div>
+      </div>
+    </div>
+    <div class="topic" data-id="t11" data-phase="2" onclick="toggle(this)">
+      <div class="topic-check"><div class="check-circle"><span class="check-icon">✓</span></div></div>
+      <div class="topic-body">
+        <div class="topic-name">Windows &amp; frames</div>
+        <div class="topic-desc">Switch between tabs, iFrames, alerts, and popups</div>
+      </div>
+    </div>
+    <div class="topic" data-id="t12" data-phase="2" onclick="toggle(this)">
+      <div class="topic-check"><div class="check-circle"><span class="check-icon">✓</span></div></div>
+      <div class="topic-body">
+        <div class="topic-name">Screenshots &amp; scrolling</div>
+        <div class="topic-desc">Capture test failures, scroll pages with JavascriptExecutor</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PHASE 3 -->
+  <div class="phase p3">
+    <div class="phase-header">
+      <div class="phase-dot">3</div>
+      <div class="phase-info">
+        <div class="phase-title">TestNG</div>
+        <div class="phase-meta">Week 6 · 5 topics</div>
+      </div>
+      <div class="phase-prog" id="pp3">0/5</div>
+    </div>
+    <div class="topic" data-id="t13" data-phase="3" onclick="toggle(this)">
+      <div class="topic-check"><div class="check-circle"><span class="check-icon">✓</span></div></div>
+      <div class="topic-body">
+        <div class="topic-name">Annotations</div>
+        <div class="topic-desc">@Test, @BeforeMethod, @AfterMethod, @BeforeClass, @AfterClass</div>
+      </div>
+    </div>
+    <div class="topic" data-id="t14" data-phase="3" onclick="toggle(this)">
+      <div class="topic-check"><div class="check-circle"><span class="check-icon">✓</span></div></div>
+      <div class="topic-body">
+        <div class="topic-name">Assertions</div>
+        <div class="topic-desc">Assert.assertEquals, assertTrue, assertNotNull — verify your results</div>
+      </div>
+    </div>
+    <div class="topic" data-id="t15" data-phase="3" onclick="toggle(this)">
+      <div class="topic-check"><div class="check-circle"><span class="check-icon">✓</span></div></div>
+      <div class="topic-body">
+        <div class="topic-name">testng.xml</div>
+        <div class="topic-desc">Run suites, groups, and parallel tests from a config file</div>
+      </div>
+    </div>
+    <div class="topic" data-id="t16" data-phase="3" onclick="toggle(this)">
+      <div class="topic-check"><div class="check-circle"><span class="check-icon">✓</span></div></div>
+      <div class="topic-body">
+        <div class="topic-name">Data-driven testing</div>
+        <div class="topic-desc">@DataProvider — run the same test with multiple input sets</div>
+      </div>
+    </div>
+    <div class="topic" data-id="t17" data-phase="3" onclick="toggle(this)">
+      <div class="topic-check"><div class="check-circle"><span class="check-icon">✓</span></div></div>
+      <div class="topic-body">
+        <div class="topic-name">Reporting</div>
+        <div class="topic-desc">Default TestNG report + ExtentReports for professional HTML output</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PHASE 4 -->
+  <div class="phase p4">
+    <div class="phase-header">
+      <div class="phase-dot">4</div>
+      <div class="phase-info">
+        <div class="phase-title">Automation framework</div>
+        <div class="phase-meta">Weeks 7–8 · 5 topics</div>
+      </div>
+      <div class="phase-prog" id="pp4">0/5</div>
+    </div>
+    <div class="topic" data-id="t18" data-phase="4" onclick="toggle(this)">
+      <div class="topic-check"><div class="check-circle"><span class="check-icon">✓</span></div></div>
+      <div class="topic-body">
+        <div class="topic-name">Page Object Model (POM)</div>
+        <div class="topic-desc">Separate locators from tests — the most important pattern in Selenium</div>
+      </div>
+    </div>
+    <div class="topic" data-id="t19" data-phase="4" onclick="toggle(this)">
+      <div class="topic-check"><div class="check-circle"><span class="check-icon">✓</span></div></div>
+      <div class="topic-body">
+        <div class="topic-name">Maven project structure</div>
+        <div class="topic-desc">pom.xml, dependencies, src/test/java folder layout</div>
+      </div>
+    </div>
+    <div class="topic" data-id="t20" data-phase="4" onclick="toggle(this)">
+      <div class="topic-check"><div class="check-circle"><span class="check-icon">✓</span></div></div>
+      <div class="topic-body">
+        <div class="topic-name">Base class &amp; utilities</div>
+        <div class="topic-desc">Reusable driver setup, teardown, config reader</div>
+      </div>
+    </div>
+    <div class="topic" data-id="t21" data-phase="4" onclick="toggle(this)">
+      <div class="topic-check"><div class="check-circle"><span class="check-icon">✓</span></div></div>
+      <div class="topic-body">
+        <div class="topic-name">Data from Excel / properties</div>
+        <div class="topic-desc">Apache POI for Excel data, .properties files for config values</div>
+      </div>
+    </div>
+    <div class="topic" data-id="t22" data-phase="4" onclick="toggle(this)">
+      <div class="topic-check"><div class="check-circle"><span class="check-icon">✓</span></div></div>
+      <div class="topic-body">
+        <div class="topic-name">Git basics</div>
+        <div class="topic-desc">git init, add, commit, push — save your framework to GitHub</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- QUICK ASK BUTTONS -->
+  <div class="ask-section">
+    <div class="ask-title">Ask Claude about any topic →</div>
+    <div class="ask-grid">
+      <a class="ask-btn" href="https://claude.ai/new?q=Explain+Java+OOP+with+a+simple+real+example+for+a+QA+beginner" target="_blank">Java OOP explained simply</a>
+      <a class="ask-btn" href="https://claude.ai/new?q=Show+me+a+complete+Selenium+WebDriver+example+in+Java%3A+open+Google%2C+search+something%2C+print+the+title" target="_blank">Write my first Selenium script</a>
+      <a class="ask-btn" href="https://claude.ai/new?q=Write+a+TestNG+test+class+with+%40BeforeMethod+and+%40AfterMethod+and+explain+each+annotation" target="_blank">TestNG starter example</a>
+      <a class="ask-btn" href="https://claude.ai/new?q=Show+me+a+simple+Page+Object+Model+example+in+Selenium+Java+for+a+login+page" target="_blank">Page Object Model example</a>
+      <a class="ask-btn" href="https://claude.ai/new?q=Explain+XPath+vs+CSS+selector+in+Selenium+with+examples+for+a+beginner" target="_blank">XPath vs CSS selector</a>
+      <a class="ask-btn" href="https://claude.ai/new?q=What+is+ExplicitWait+in+Selenium+and+show+me+a+code+example" target="_blank">Waits in Selenium</a>
+    </div>
+  </div>
+
+  <div class="footer">
+    Progress saves in your browser automatically.<br>
+    <button class="reset-btn" onclick="resetAll()">Reset all progress</button>
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const TOTAL = 22;
+const PHASE_TOTALS = {1:6, 2:6, 3:5, 4:5};
+
+function getState() {
+  try { return JSON.parse(localStorage.getItem('mural_qa_roadmap') || '{}'); }
+  catch(e) { return {}; }
+}
+function saveState(s) {
+  try { localStorage.setItem('mural_qa_roadmap', JSON.stringify(s)); }
+  catch(e) {}
+}
+
+function toggle(el) {
+  const id = el.dataset.id;
+  const s = getState();
+  const wasDone = !!s[id];
+  if (wasDone) delete s[id];
+  else s[id] = 1;
+  saveState(s);
+  render();
+  showToast(wasDone ? 'Marked as not done' : '✓ Topic completed!');
+}
+
+function render() {
+  const s = getState();
+  document.querySelectorAll('.topic').forEach(el => {
+    el.classList.toggle('done', !!s[el.dataset.id]);
+  });
+  const done = Object.keys(s).length;
+  const pct = Math.round(done / TOTAL * 100);
+  document.getElementById('pct').textContent = pct + '%';
+  document.getElementById('bar').style.width = pct + '%';
+  document.getElementById('count').textContent = done + ' / ' + TOTAL + ' done';
+
+  for (let p = 1; p <= 4; p++) {
+    const pDone = document.querySelectorAll(`.topic[data-phase="${p}"].done`).length;
+    document.getElementById('pp' + p).textContent = pDone + '/' + PHASE_TOTALS[p];
+  }
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => t.classList.remove('show'), 1800);
+}
+
+function resetAll() {
+  if (confirm('Reset all progress? This cannot be undone.')) {
+    localStorage.removeItem('mural_qa_roadmap');
+    render();
+    showToast('Progress reset');
+  }
+}
+
+render();
+</script>
+</body>
+</html>
